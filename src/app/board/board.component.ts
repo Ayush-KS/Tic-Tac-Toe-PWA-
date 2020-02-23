@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
@@ -21,19 +22,32 @@ export class BoardComponent implements OnInit {
     this.squares = Array(9).fill(null);
     this.winner = null;
     this.xIsNext = true;
+    let main = document.getElementsByTagName('main') as HTMLCollectionOf<HTMLElement>;
+      main[0].style.pointerEvents = 'auto';
+      main[0].style.opacity = '1';
   }
 
   get player() {
     return this.xIsNext ? 'X' : 'O';
   }
 
-  makeMove(idx: number) {
+  makeMove(idx: number, event:any) {
     if(!this.squares[idx]) {
       this.squares.splice(idx, 1, this.player);
       this.xIsNext = !this.xIsNext; 
     }
 
     this.winner = this.calculateWinner();
+    if(this.winner) {
+      let main = document.getElementsByTagName('main') as HTMLCollectionOf<HTMLElement>;
+      main[0].style.pointerEvents = 'none';
+      main[0].style.opacity = '0.5';
+      // let shand = document.getElementsByTagName("app-square") as HTMLCollectionOf<HTMLElement>;
+      // for(let i = 0; i < shand.length; i++) {
+      //   shand[i].style.pointerEvents = 'none';
+      //   shand[i].style.opacity = '0.5';
+      // }
+    }
   }
 
   calculateWinner() {
